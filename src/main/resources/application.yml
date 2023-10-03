@@ -1,0 +1,35 @@
+server:
+  port: 8081
+  cors:
+    enabled: true
+info:
+  app:
+    name: Checkout Resource server
+
+spring:
+  jpa:
+    database: POSTGRESQL
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+      # Si no tuvieramos este ddl-auto, tendríamos un error al inciar, porque si bien la BBDD está creada, no están las tablas. Deberíamos iniciar las tablas desde un script sql en docker-compose
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+
+  datasource:
+    #Username, password & url are provided by the environment config in the docker-compose
+    platform: postgres
+    driver-class-name: org.postgresql.Driver
+
+
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: INFO
+        type:
+          descriptor:
+            sql:
+              BasicBinder: TRACE

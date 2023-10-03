@@ -1,0 +1,35 @@
+#Esá comentada porque en la nueva especificación {3} es opcional
+#version: "3.9"
+
+services:
+  testapiimg:
+    image: 'testapiimage:latest'
+    container_name: testapiimg
+    build:
+      context: .
+    restart: always
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgresimg:5432/testapidb
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    ports:
+      # Esto para que en la VPS acceda al 8080 ten el container acceda al 8081 #VER
+      - 8080:8081
+    depends_on:
+      - postgresimg
+
+  postgresimg:
+    container_name: postgresimg
+    image: "postgres:latest"
+    restart: always
+    environment:
+      - POSTGRES_DB=testapidb
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data/
+volumes:
+  db-data:
